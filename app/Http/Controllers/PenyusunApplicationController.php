@@ -15,7 +15,14 @@ class PenyusunApplicationController extends Controller
 {
     public function create()
     {
-        $jurusan = Jurusan::orderBy('nama_jurusan')->get();
+        // Hanya ambil bagian S1 dan S2 PJJ Pendidikan Agama Islam yang memiliki mata kuliah
+        $jurusan = Jurusan::where(function ($query) {
+            $query->whereIn('kode_jurusan', ['PJJPAI-S1', 'PJJPAI-S2'])
+                  ->orWhere('nama_jurusan', 'LIKE', '%PJJ Pendidikan Agama Islam%');
+        })
+        ->whereHas('mataKuliah')
+        ->orderBy('id', 'asc')
+        ->get();
 
         // Auto-fill data dari user kampus yang sudah login
         $kampusUser = null;

@@ -19,8 +19,8 @@ class FinalDraftController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Ambil semua jurusan
-        $allJurusans = \App\Models\Jurusan::orderBy('nama_jurusan')->get();
+        // Ambil jurusan yang aktif untuk penyusunan modul (S1 dan S2 PJJ PAI)
+        $allJurusans = \App\Models\Jurusan::whereHas('mataKuliah')->orderBy('id', 'asc')->get();
 
         // Kelompokkan penyusun berdasarkan jurusan
         $penyusunsByJurusan = $penyusuns->groupBy(function($penyusun) {

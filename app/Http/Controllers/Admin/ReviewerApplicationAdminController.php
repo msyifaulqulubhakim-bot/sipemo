@@ -56,8 +56,8 @@ class ReviewerApplicationAdminController extends Controller
 
     public function show(ReviewerApplication $application)
     {
-        // Ambil semua jurusan dengan mata kuliah untuk di-assign
-        $jurusans = Jurusan::with('mataKuliah.reviewer')->orderBy('nama_jurusan')->get();
+        // Ambil jurusan aktif yang memiliki mata kuliah untuk di-assign (S1 dan S2 PJJ PAI)
+        $jurusans = Jurusan::whereHas('mataKuliah')->with('mataKuliah.reviewer')->orderBy('id', 'asc')->get();
         
         // Ambil user reviewer jika statusnya approved
         $user = null;

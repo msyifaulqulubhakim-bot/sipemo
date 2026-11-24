@@ -66,8 +66,8 @@ class PenyusunApplicationAdminController extends Controller
             'rejected' => PenyusunApplication::where('status', 'rejected')->count(),
         ];
         
-        // Ambil semua jurusan untuk dropdown filter
-        $jurusans = Jurusan::orderBy('nama_jurusan')->get();
+        // Ambil jurusan aktif untuk dropdown filter (S1 dan S2 PJJ PAI)
+        $jurusans = Jurusan::whereHas('mataKuliah')->orderBy('id', 'asc')->get();
         
         return view('admin.penyusun.index', compact('applications', 'stats', 'jurusans'));
     }
